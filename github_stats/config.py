@@ -23,8 +23,8 @@ class Config:
     @classmethod
     def from_env(cls) -> 'Config':
         """Create configuration from environment variables."""
-        user_name = os.getenv('USER_NAME')
-        access_token = os.getenv('ACCESS_TOKEN')
+        user_name = os.environ['USER_NAME']
+        access_token = os.environ['ACCESS_TOKEN']
 
         if not user_name:
             raise ValueError("USER_NAME environment variable is required")
