@@ -2,8 +2,6 @@ import os
 from dataclasses import dataclass, field
 from typing import Dict, Optional
 
-from dotenv import load_dotenv
-
 
 @dataclass
 class Config:
@@ -25,10 +23,8 @@ class Config:
     @classmethod
     def from_env(cls) -> 'Config':
         """Create configuration from environment variables."""
-        load_dotenv()
-
-        user_name = os.environ.get('USER_NAME')
-        access_token = os.environ.get('ACCESS_TOKEN')
+        user_name = os.environ['USER_NAME']
+        access_token = os.environ['ACCESS_TOKEN']
 
         if not user_name:
             raise ValueError("USER_NAME environment variable is required")
