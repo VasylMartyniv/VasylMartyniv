@@ -134,44 +134,6 @@ class CacheManager:
                 repo_hash = hashlib.sha256(node['node']['nameWithOwner'].encode('utf-8')).hexdigest()
                 f.write(f"{repo_hash} 0 0 0 0\n")
 
-    @staticmethod
-    def add_archive() -> List[int]:
-        """
-        Add archived repository data to calculations.
-
-        Returns:
-            List containing [added_loc, deleted_loc, net_loc, commits, repos]
-        """
-        try:
-            with open('cache/repository_archive.txt', 'r') as f:
-                data = f.readlines()
-
-            # Parse archived data
-            old_data = data
-            data = data[7:len(data) - 3]
-            added_loc, deleted_loc, added_commits = 0, 0, 0
-            contributed_repos = len(data)
-
-            for line in data:
-                repo_hash, total_commits, my_commits, *loc = line.split()
-                added_loc += int(loc[0])
-                deleted_loc += int(loc[1])
-                if my_commits.isdigit():
-                    added_commits += int(my_commits)
-
-            # Add additional commits from the last line (special case)
-            added_commits += int(old_data[-1].split()[4][:-1])
-
-            return [
-                added_loc,
-                deleted_loc,
-                added_loc - deleted_loc,
-                added_commits,
-                contributed_repos
-            ]
-        except (FileNotFoundError, IndexError):
-            return [0, 0, 0, 0, 0]
-
     @classmethod
     def force_close_file(cls, data: List[str], cache_comment: List[str]) -> None:
         """

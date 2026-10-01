@@ -4,7 +4,6 @@ from github_stats.api.operations import (
     get_user_info, get_follower_count, get_repos_or_stars,
     get_commit_count, get_loc_statistics
 )
-from github_stats.cache.manager import CacheManager
 from github_stats.config import config
 from github_stats.export.svg import format_age_string, count_commit_stats, update_svg
 from github_stats.utils.performance import measure_performance, format_execution_time
@@ -47,14 +46,6 @@ def main() -> None:
         ['OWNER', 'COLLABORATOR', 'ORGANIZATION_MEMBER']
     )
     follower_data, follower_time = measure_performance(get_follower_count, config.user_name)
-
-    # Add archived repository data if this is the original user
-    if config.owner_id == {'id': 'MDQ6VXNlcjE2NjY4MTc1'}:
-        archived_data = CacheManager.add_archive()
-        for index in range(len(total_loc) - 1):
-            total_loc[index] += archived_data[index]
-        contrib_data += archived_data[-1]
-        commit_data += int(archived_data[-2])
 
     # Format LOC data for display
     formatted_loc = []

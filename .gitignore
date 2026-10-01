@@ -29,7 +29,6 @@ ENV/
 
 # Cache and logs
 !cache/requirements.txt
-!cache/repository_archive.txt
 .pytest_cache/
 .coverage
 htmlcov/
